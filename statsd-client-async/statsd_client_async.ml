@@ -32,9 +32,9 @@ module T =  struct
       Socket.Address.Inet.create inet_addr ~port
     | Unix.ADDR_UNIX _ -> failwith "Unix domain addresses not supported"
 
-  let sendto fd msg offset msg_length flags socket_address =
+  let sendto fd msg _offset msg_length _flags socket_address =
     match Udp.sendto () with
-    | Error e -> return (-1)
+    | Error _ -> return (-1)
     | Ok send ->
       let buf = msg |> Iobuf.of_string |> Iobuf.read_only in
       let inet_addr = inet_addr_exn socket_address in
