@@ -3,16 +3,16 @@
 default: build
 
 build:
-	jbuilder build @install
+	dune build @install
 
 install: build
-	jbuilder install statsd-client
-	jbuilder install statsd-client-async
-	jbuilder install statsd-client-lwt
+	dune install statsd-client
+	dune install statsd-client-async
+	dune install statsd-client-lwt
 
 uninstall:
-	jbuilder uninstall
+	dune uninstall
 
 .PHONY: clean
 clean:
-	jbuilder clean
+	dune clean

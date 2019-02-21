@@ -1,0 +1,6 @@
+(library
+ (name statsd_client_async)
+ (public_name statsd-client-async)
+ (preprocess
+  (pps ppx_sexp_conv))
+ (libraries async sexplib))

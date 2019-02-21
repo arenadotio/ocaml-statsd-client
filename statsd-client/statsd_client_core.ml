@@ -13,7 +13,7 @@ module Config : C = struct
   let ipaddr = ref None
   let port = ref None
 
-  let log_debug = ref (fun s -> ())
+  let log_debug = ref (fun _ -> ())
   let log_error = ref (fun s -> Printf.eprintf "[error] %s\n%!" s)
 end
 
@@ -132,11 +132,11 @@ module Make (U : IO) :
     else []
 
   let gauge ?sample_rate stat v =
-    send (fmt_data ?sample_rate [stat, fmt_guage v])
+    send ~data:(fmt_data ?sample_rate [stat, fmt_guage v])
 
   (** Log timing info. time is an int of milliseconds. *)
   let timing ?sample_rate stat time =
-    send (fmt_data ?sample_rate [stat, fmt_time time])
+    send ~data:(fmt_data ?sample_rate [stat, fmt_time time])
 
   (** Log timing info. time is a float of seconds which will
       be converted to milliseconds. *)
@@ -146,7 +146,7 @@ module Make (U : IO) :
   (** Update a list of counter stats by some delta *)
   let update_stats ?sample_rate delta stats =
     let delta = fmt_counting delta in
-    send (fmt_data ?sample_rate (List.map (fun stat -> stat, delta) stats))
+    send ~data:(fmt_data ?sample_rate (List.map (fun stat -> stat, delta) stats))
 
   (** Increment a list of counter stats by one *)
   let increment ?sample_rate stats =
