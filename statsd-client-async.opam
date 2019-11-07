@@ -19,7 +19,8 @@ depends: [
   "dune" {build & >= "1.0"}
   "ppx_sexp_conv"
   "sexplib"
-  "async"
+  "async" {>= "v0.12.0"}
+  "async_udp"
 ]
 
 available: [ ocaml-version >= "4.04.1" ]
