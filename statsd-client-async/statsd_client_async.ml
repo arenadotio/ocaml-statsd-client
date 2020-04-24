@@ -33,7 +33,7 @@ module T =  struct
     | Unix.ADDR_UNIX _ -> failwith "Unix domain addresses not supported"
 
   let sendto fd msg _offset msg_length _flags socket_address =
-    match Udp.sendto_sync () with
+    match Async_udp.sendto_sync () with
     | Error _ -> return (-1)
     | Ok send ->
       let buf = msg |> Iobuf.of_string |> Iobuf.read_only in

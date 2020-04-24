@@ -3,4 +3,4 @@
  (public_name statsd-client-async)
  (preprocess
   (pps ppx_sexp_conv))
- (libraries async sexplib))
+ (libraries async_udp sexplib))
