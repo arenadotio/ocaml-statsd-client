@@ -33,13 +33,19 @@ module T =  struct
     | Unix.ADDR_UNIX _ -> failwith "Unix domain addresses not supported"
 
   let sendto fd msg _offset msg_length _flags socket_address =
-    match Udp.sendto () with
+    match Async_udp.sendto_sync () with
     | Error _ -> return (-1)
     | Ok send ->
       let buf = msg |> Iobuf.of_string |> Iobuf.read_only in
       let inet_addr = inet_addr_exn socket_address in
       send fd buf inet_addr
-      >>| fun () -> msg_length
+      |> Unix.Syscall_result.Unit.to_result
+      |> function
+      | Ok () -> return msg_length
+      | Error e ->
+        !log_error (sprintf "Write to socket failed with '%s'" (Unix.Error.message e));
+        return 0
+
 end
 
 include Statsd_client_core.Make(T)
